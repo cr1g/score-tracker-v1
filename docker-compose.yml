@@ -1,0 +1,32 @@
+version: '3'
+services:
+
+  node:
+    build: ./api
+    ports:
+      - "5050:5050"
+    volumes:
+      - ./api:/usr/src/app
+    environment:
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: database
+      DATABASE_USER: root
+      DATABASE_HOST: mysqldb
+      SERVICE_PORT: 5050
+
+  client:
+    build: ./client
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./client:/usr/src/app
+    environment:
+      SERVICE_PORT: 8080
+
+  mysqldb:
+    image: "mysql:latest"
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: database
+      MYSQL_USER: root
